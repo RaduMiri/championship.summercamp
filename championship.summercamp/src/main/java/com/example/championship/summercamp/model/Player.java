@@ -6,20 +6,16 @@ import lombok.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
-//We are not allowed to use two constructors?
 @Entity
 @Getter @Setter @AllArgsConstructor @NoArgsConstructor
-public class Team {
+public class Player {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
-    @OneToMany(mappedBy = "team1")
+    //This creates a a column in player named team_id
+    @ManyToOne
+    @JoinColumn(name = "TEAM_ID")
     @JsonIgnore
-    private List<Game> game_team_1;
-    @OneToMany(mappedBy = "team2")
-    @JsonIgnore
-    private List<Game> game_team_2;
+    private Team team;
 }
