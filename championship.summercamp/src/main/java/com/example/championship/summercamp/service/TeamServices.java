@@ -15,6 +15,7 @@ public class TeamServices {
     public Team getOne(Integer id){
         return teamRepository.findById(id).get();
     }
+
     public List<Team> getAll(){
         return teamRepository.findAll();
     }
@@ -27,7 +28,10 @@ public class TeamServices {
         return teamRepository.save(newTeam);
     }
 
-    public void deleteTeam(Integer id){
-        teamRepository.deleteById(id);
-    }
+    public void deleteTeam(Integer id) { teamRepository.deleteById(id); }
+
+    public void deleteAllTeams(){teamRepository.deleteAll();}
+
+    //public void sortById(){teamRepository.s}
+    //sorts and filters
 }

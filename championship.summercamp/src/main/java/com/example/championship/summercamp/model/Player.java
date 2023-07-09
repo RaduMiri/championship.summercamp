@@ -13,9 +13,8 @@ public class Player {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
-    //This creates a a column in player named team_id
+    //This creates a column in player named team_id
     @ManyToOne
-    @JoinColumn(name = "TEAM_ID")
-    @JsonIgnore
+    @JoinColumn(foreignKey=@ForeignKey(name = "fk_player_team"))
     private Team team;
 }

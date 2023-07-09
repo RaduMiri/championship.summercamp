@@ -33,7 +33,8 @@ public class TeamController {
    @PutMapping("/updateTeam/{id}")
    public Team updateTeam(@RequestBody Team newTeam, @PathVariable Integer id){
         Team dbTeam = teamServices.getOne(id);
-        dbTeam.setName(newTeam.getName());
+        if(newTeam.getName()!=null)
+            dbTeam.setName(newTeam.getName());
         return teamServices.updateTeam(dbTeam);
    }
 
@@ -41,6 +42,9 @@ public class TeamController {
     public void deleteTeam(@PathVariable Integer id){
         teamServices.deleteTeam(id);
    }
+
+   @DeleteMapping("/deleteAll")
+    public void deleteAllTeams(){teamServices.deleteAllTeams();}
 
    //I don't have batch methods
 }
