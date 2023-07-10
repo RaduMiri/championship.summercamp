@@ -11,6 +11,8 @@ import java.util.List;
 public class TeamServices {
     @Autowired
     private TeamRepository teamRepository;
+//    @ExceptionHandler
+//    public void handleException(){}
 
     public Team getOne(Integer id){
         return teamRepository.findById(id).get();
@@ -24,7 +26,12 @@ public class TeamServices {
         return teamRepository.save(newTeam);
     }
 
-    public Team updateTeam(Team newTeam){
+    public Team updateTeam(Team newTeam, Integer id){
+        Team dbTeam = teamRepository.getOne(id);
+        if(newTeam.getName()!=null)
+            dbTeam.setName(newTeam.getName());
+        if(newTeam.getCaptain()!=null)
+            dbTeam.setCaptain(newTeam.getCaptain());
         return teamRepository.save(newTeam);
     }
 
@@ -32,6 +39,10 @@ public class TeamServices {
 
     public void deleteAllTeams(){teamRepository.deleteAll();}
 
+    public List<Team> filterByName(String name)
+    {
+        return teamRepository.findByName(name);
+    }
     //public void sortById(){teamRepository.s}
     //sorts and filters
 }

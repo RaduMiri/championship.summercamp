@@ -30,12 +30,7 @@ public class PlayerController {
 
     @PutMapping("/updatePlayer/{id}")
     public Player updatePlayer(@RequestBody Player newPlayer, @PathVariable Integer id){
-        Player dbPlayer = playerServices.getOne(id);
-        if(newPlayer.getName()!=null)
-            dbPlayer.setName(newPlayer.getName());
-        if(newPlayer.getTeam()!=null)
-            dbPlayer.setTeam(newPlayer.getTeam());
-        return playerServices.updatePlayer(dbPlayer);
+        return playerServices.updatePlayer(newPlayer, id);
     }
 
     @DeleteMapping("/delete/{id}")

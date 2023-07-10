@@ -4,9 +4,7 @@ import com.example.championship.summercamp.model.Team;
 import com.example.championship.summercamp.service.TeamServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/team")
@@ -32,13 +30,10 @@ public class TeamController {
 
    @PutMapping("/updateTeam/{id}")
    public Team updateTeam(@RequestBody Team newTeam, @PathVariable Integer id){
-        Team dbTeam = teamServices.getOne(id);
-        if(newTeam.getName()!=null)
-            dbTeam.setName(newTeam.getName());
-        return teamServices.updateTeam(dbTeam);
+        return teamServices.updateTeam(newTeam,id);
    }
 
-   @DeleteMapping("/delete/{id}")
+   @DeleteMapping("/delete/{id}") //TODO:doesn't seem to work
     public void deleteTeam(@PathVariable Integer id){
         teamServices.deleteTeam(id);
    }
@@ -46,5 +41,11 @@ public class TeamController {
    @DeleteMapping("/deleteAll")
     public void deleteAllTeams(){teamServices.deleteAllTeams();}
 
+    //TODO: The rest of getmappings for
+    @GetMapping("/filterByName/{name}")
+    public List<Team> filterByName(@PathVariable String name)
+    {
+        return teamServices.filterByName(name);
+    }
    //I don't have batch methods
 }

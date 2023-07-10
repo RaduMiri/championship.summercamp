@@ -21,10 +21,22 @@ public class GameServices {
     }
 
     public Game createGame(Game newGame){
+
         return gameRepository.save(newGame);
     }
 
-    public Game updateGame(Game newGame){
+    public Game updateGame(Game newGame, Integer id){
+        Game dbGame = gameRepository.getOne(id);
+        if(newGame.getGameType()!=null)
+            dbGame.setGameType(newGame.getGameType());
+        if(newGame.getTeam1()!=null)
+            dbGame.setTeam1(newGame.getTeam1());
+        if(newGame.getScore1()!=0)
+            dbGame.setScore1(newGame.getScore1());
+        if(newGame.getTeam2()!=null)
+            dbGame.setTeam2(newGame.getTeam2());
+        if(newGame.getScore2()!=0)
+            dbGame.setScore2(newGame.getScore2());
         return gameRepository.save(newGame);
     }
 

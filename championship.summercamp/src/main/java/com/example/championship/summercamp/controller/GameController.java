@@ -32,18 +32,7 @@ public class GameController {
     //set the proper attributes
     @PutMapping("/updateGame/{id}")
     public Game updateGame(@RequestBody Game newGame, @PathVariable Integer id){
-        Game dbGame = gameServices.getOne(id);
-        if(newGame.getGameType()!=null)
-            dbGame.setGameType(newGame.getGameType());
-        if(newGame.getTeam1()!=null)
-            dbGame.setTeam1(newGame.getTeam1());
-        if(newGame.getScore1()!=0)
-            dbGame.setScore1(newGame.getScore1());
-        if(newGame.getTeam2()!=null)
-            dbGame.setTeam2(newGame.getTeam2());
-        if(newGame.getScore2()!=0)
-            dbGame.setScore2(newGame.getScore2());
-        return gameServices.updateGame(dbGame);
+        return gameServices.updateGame(newGame,id);
     }
 
     @DeleteMapping("/delete/{id}")
