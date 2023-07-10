@@ -2,8 +2,6 @@ package com.example.championship.summercamp.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
 @Entity
 @Getter @Setter @AllArgsConstructor @NoArgsConstructor
