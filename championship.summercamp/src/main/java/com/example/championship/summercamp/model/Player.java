@@ -13,11 +13,12 @@ public class Player {
     private String firstName;
     private String lastName;
     private Integer age;
-    @OneToOne(mappedBy = "captain")
-    @JsonIgnore
-    private Team teamCaptain;
-    //This creates a column in player named team_id
+    private Integer number;
     @ManyToOne
     @JoinColumn(foreignKey=@ForeignKey(name = "fk_player_team"))
     private Team team;
+    @OneToOne(mappedBy = "captain")
+    @JsonIgnore
+    private Team teamCaptain;
+
 }

@@ -1,7 +1,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title>List Teams</title>
+    <title>List Players</title>
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
           integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
@@ -12,7 +12,7 @@
 
 <div class="container">
 
-    <h3>List Teams</h3>
+    <h3>List Players</h3>
 
     <hr/>
 
@@ -21,18 +21,21 @@
         <thead>
         <tr>
             <th>ID</th>
-            <th>Name</th>
-            <th>Captain</th>
-            <th>Colour</th>
+            <th>First name</th>
+            <th>Last name</th>
+            <th>Age</th>
+            <th>Number</th>
+            <th>Team</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="team: ${teams}">
-<!--            Do not put ? before attributes that are not objects, 500-->
-            <td th:text="${team.id}"/>
-            <td th:text="${team.name}" />
-            <td th:text="${team.captain?.firstName}"/>
-            <td th:text="${team.colour}"/>
+        <tr th:each="player: ${players}">
+            <td th:text="${player.id}"/>
+            <td th:text="${player.firstName}" />
+            <td th:text="${player.lastName}" />
+            <td th:text="${player.age}" />
+            <td th:text="${player.number}" />
+            <td th:text="${player.team?.name}"/>
         </tr>
         </tbody>
 

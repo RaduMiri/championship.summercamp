@@ -12,40 +12,52 @@ public class TeamController {
     @Autowired
     private TeamServices teamServices;
 
-    @GetMapping(value = "/one/{id}")
-    public Team getTeam(@PathVariable Integer id){
-        return teamServices.getOne(id);
-        //if it doesn't find the team it will give a server error
-    }
-
-    @GetMapping(value = "/all")
-    public List<Team> getAllTeams(){
-        return teamServices.getAll();
-    }
-
+    //CRUD
+    //Create
     @PostMapping("/createTeam")
     public Team postTeam(@RequestBody Team newTeam){
         return teamServices.createTeam(newTeam);
     }
 
-   @PutMapping("/updateTeam/{id}")
-   public Team updateTeam(@RequestBody Team newTeam, @PathVariable Integer id){
-        return teamServices.updateTeam(newTeam,id);
-   }
+    //Update
+    @PutMapping("/updateTeam/{id}")
+    public Team updateTeam(@RequestBody Team newTeam, @PathVariable Integer id){return teamServices.updateTeam(newTeam,id);}
 
-   @DeleteMapping("/delete/{id}") //TODO:doesn't seem to work
+    //Deletes
+    @DeleteMapping("/delete/{id}") //TODO:doesn't seem to work
     public void deleteTeam(@PathVariable Integer id){
         teamServices.deleteTeam(id);
    }
-
-   @DeleteMapping("/deleteAll")
+    @DeleteMapping("/deleteAll")
     public void deleteAllTeams(){teamServices.deleteAllTeams();}
 
-    //TODO: The rest of getmappings for
-    @GetMapping("/filterByName/{name}")
-    public List<Team> filterByName(@PathVariable String name)
-    {
-        return teamServices.filterByName(name);
+    //Filters
+    @GetMapping({"/findById/{id}","/one/{id}"})
+    public Team getTeam(@PathVariable Integer id){return teamServices.getOne(id);}
+    @GetMapping("/findByName/{name}")
+    public List<Team> findByName(@PathVariable String name) {return teamServices.findByName(name);}
+    @GetMapping("/findByColour/{colour}")
+    public List<Team> findByColour(@PathVariable String colour) {return teamServices.findByColour(colour);}
+    //GetMapping("/findByCaptainID/{captainId}")
+
+    //Sorts
+    //TODO:This is sorted by id I think
+    @GetMapping({"/findByOrderByIdDesc", "/all"})
+    public List<Team> getAllTeams(){
+        return teamServices.getAll();
     }
-   //I don't have batch methods
+//    @GetMapping("/findByOrderByIdAsc")
+//    public List<Team> findByOrderByIdAsc(){return teamServices.findByOrderByIdAsc();}
+    @GetMapping("/findByOrderByNameAsc")
+    public List<Team> findByOrderByNameAsc(){return teamServices.findByOrderByNameAsc();}
+    @GetMapping("/findByOrderByColourAsc")
+    public List<Team> findByOrderByColourAsc(){return teamServices.findByOrderByColourAsc();}
+    @GetMapping("/findByOrderByIdDesc")
+    public List<Team> findByOrderByIdDesc(){return teamServices.findByOrderByIdDesc();}
+    @GetMapping("/findByOrderByNameDesc")
+    public List<Team> findByOrderByNameDesc(){return teamServices.findByOrderByNameDesc();}
+    @GetMapping("/findByOrderByColourDesc")
+    public List<Team> findByOrderByColourDesc(){return teamServices.findByOrderByColourDesc();}
+
+   //I don't have many batch methods
 }

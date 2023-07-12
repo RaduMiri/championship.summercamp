@@ -12,9 +12,12 @@ public class Team {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
+    private String colour;
+    //mascot?
+    //motto?
     @OneToOne
     @JoinColumn(name = "captain_id", referencedColumnName = "id")
-    private Player captain; //TODO: Captain should not be able to be assigned to a diffrent team
+    private Player captain; //TODO: Captain should not be able to be assigned to a different team
     @OneToMany(mappedBy = "team")
     @JsonIgnore
     private List<Player> players;

@@ -10,13 +10,17 @@ public class Game {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String gameType;
+    private String field;
+    private Integer score1;
+    private Integer score2;
     @ManyToOne
     @JoinColumn (name = "team1")
     private Team team1;
     @ManyToOne
     @JoinColumn (name = "team2")
     private Team team2;
-    private int score1;
-    private int score2;
+
+    //time TODO:research
+    //field
 }
 

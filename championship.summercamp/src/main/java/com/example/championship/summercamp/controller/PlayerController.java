@@ -13,31 +13,54 @@ public class PlayerController {
     @Autowired
     private PlayerServices playerServices;
 
-    @GetMapping("/one/{id}")
-    public Player getPlayer(@PathVariable Integer id){
-        return playerServices.getOne(id);
-    }
-
-    @GetMapping(value = "/all")
-    public List<Player> getAllPlayers(){return playerServices.getAll();}
-
-    //Not working properly
+    //CRUD
     @PostMapping("/createPlayer")
-    public Player postPlayer(@RequestBody Player newPlayer){
-
-        return playerServices.createPlayer(newPlayer);
-    }
+    public Player postPlayer(@RequestBody Player newPlayer){return playerServices.createPlayer(newPlayer);}
 
     @PutMapping("/updatePlayer/{id}")
-    public Player updatePlayer(@RequestBody Player newPlayer, @PathVariable Integer id){
-        return playerServices.updatePlayer(newPlayer, id);
-    }
+    public Player updatePlayer(@RequestBody Player newPlayer, @PathVariable Integer id){return playerServices.updatePlayer(newPlayer, id);}
 
     @DeleteMapping("/delete/{id}")
     public void deletePlayer(@PathVariable Integer id){
         playerServices.deletePlayer(id);
     }
-
     @DeleteMapping("/deleteAll")
     public void deleteAllPlayers(){playerServices.deleteAllPlayers();}
+
+    //Filters
+    @GetMapping({"/findById/{id}","/one/{id}"})
+    public Player getPlayer(@PathVariable Integer id){
+        return playerServices.getOne(id);
+    }
+    @GetMapping("/findByFirstName/{firstName}")
+    public List<Player> findByFirstName(@PathVariable String firstName) {return playerServices.findByFirstName(firstName);}
+    @GetMapping("/findByLastName/{lastName}")
+    public List<Player> findByLastName(@PathVariable String lastName) {return playerServices.findByLastName(lastName);}
+    @GetMapping("/findByAge/{age}")
+    public List<Player> findByAge(@PathVariable Integer age) {return playerServices.findByAge(age);}
+    @GetMapping("/findByNumber/{number}")
+    public List<Player> findByNumber(@PathVariable Integer number) {return playerServices.findByNumber(number);}
+
+    //Sorts
+    @GetMapping({"/findByOrderByIdDesc", "/all"})
+    public List<Player> getAllPlayers(){return playerServices.getAll();}
+    @GetMapping("/findByOrderByFirstNameAsc")
+    public List<Player> findByOrderByFirstNameAsc(){return playerServices.findByOrderByFirstNameAsc();}
+    @GetMapping("/findByOrderByLastNameAsc")
+    public List<Player> findByOrderByLastNameAsc(){return playerServices.findByOrderByLastNameAsc();}
+    @GetMapping("/findByOrderByAgeAsc")
+    public List<Player> findByOrderByAgeAsc(){return playerServices.findByOrderByAgeAsc();}
+    @GetMapping("/findByOrderByNumberAsc")
+    public List<Player> findByOrderByNumberAsc(){return playerServices.findByOrderByNumberAsc();}
+
+    @GetMapping("/findByOrderByIdDesc")
+    public List<Player> findByOrderByIdDesc(){return playerServices.findByOrderByIdDesc();}
+    @GetMapping("/findByOrderByFirstNameDesc")
+    public List<Player> findByOrderByFirstNameDesc(){return playerServices.findByOrderByFirstNameDesc();}
+    @GetMapping("/findByOrderByLastNameDesc")
+    public List<Player> findByOrderByLastNameDesc(){return playerServices.findByOrderByLastNameDesc();}
+    @GetMapping("/findByOrderByAgeDesc")
+    public List<Player> findByOrderByAgeDesc(){return playerServices.findByOrderByAgeDesc();}
+    @GetMapping("/findByOrderByNumberDesc")
+    public List<Player> findByOrderByNumberDesc(){return playerServices.findByOrderByNumberDesc();}
 }

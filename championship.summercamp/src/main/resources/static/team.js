@@ -1,4 +1,8 @@
-function createTeam()
-{ //TODO:Add function create with Ajax (said Luciana)
-    console.log("Hello")
-}
+$(document).ready(function() {
+    $.ajax({
+        url: "team-form"
+    }).then(function(data) {
+       $('.greeting-id').append(data.id);
+       $('.greeting-content').append(data.content);
+    });
+});
