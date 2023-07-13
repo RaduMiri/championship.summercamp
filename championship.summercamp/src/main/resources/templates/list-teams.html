@@ -24,6 +24,7 @@
             <th>Name</th>
             <th>Captain</th>
             <th>Colour</th>
+            <th>Delete</th>
         </tr>
         </thead>
         <tbody>
@@ -33,6 +34,7 @@
             <td th:text="${team.name}" />
             <td th:text="${team.captain?.firstName}"/>
             <td th:text="${team.colour}"/>
+            <td><a th:href="@{/delete/{id}(id=${team.id})}">Delete</a></td>
         </tr>
         </tbody>
 

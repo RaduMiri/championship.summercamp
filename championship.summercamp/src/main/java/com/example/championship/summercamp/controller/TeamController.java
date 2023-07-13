@@ -8,6 +8,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/team")
+@CrossOrigin(origins = "http://localhost:8080")
 public class TeamController {
     @Autowired
     private TeamServices teamServices;
@@ -42,7 +43,7 @@ public class TeamController {
 
     //Sorts
     //TODO:This is sorted by id I think
-    @GetMapping({"/findByOrderByIdDesc", "/all"})
+    @GetMapping({"/findByOrderByIdAsc", "/all"})
     public List<Team> getAllTeams(){
         return teamServices.getAll();
     }

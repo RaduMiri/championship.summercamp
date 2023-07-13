@@ -20,15 +20,29 @@ public class TeamViewer {
         return mav;
     }
 
-    @GetMapping("/teamForm") //name?
+    @GetMapping("/getTeams")
+    public String getTeamsAjax(){return "teamJS";}
+
+    //TODO:Ask, should I somehow use here the functions from the rest controller?
+    @GetMapping("/team") //I don't know what is the point for this
     public String teamForm(Model model) {
         model.addAttribute("team", new Team());
-        return "team-form";
+        return "team";
     }
-
-    @PostMapping("/teamForm")
-    public String teamSubmit(@ModelAttribute Team team, Model model) {
+    //The form saves failed teams, I think
+    //Can't leave empty slots
+    @PostMapping("/team")
+    public Team teamSubmit(@ModelAttribute Team team, Model model) {
         model.addAttribute("team", team);
-        return "team-form";
+        return teamServices.createTeam(team);
+    }
+    //Dubious error for still existing teams
+    //Error becuase some players are captains
+    @GetMapping("/delete/{id}")
+    public String deleteTeam(@PathVariable("id") Integer id, Model model) {
+        Team team = teamServices.getOne(id);
+                //.orElseThrow(() -> new IllegalArgumentException("Invalid team Id:" + id));
+        teamServices.deleteTeam(id);
+        return "list-teams"; //why u no go back?
     }
 }
