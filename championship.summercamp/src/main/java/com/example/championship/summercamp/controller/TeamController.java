@@ -25,7 +25,7 @@ public class TeamController {
     public Team updateTeam(@RequestBody Team newTeam, @PathVariable Integer id){return teamServices.updateTeam(newTeam,id);}
 
     //Deletes
-    @DeleteMapping("/delete/{id}") //TODO:doesn't seem to work
+    @DeleteMapping("/delete/{id}")
     public void deleteTeam(@PathVariable Integer id){
         teamServices.deleteTeam(id);
    }

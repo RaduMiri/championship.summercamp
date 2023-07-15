@@ -11,49 +11,9 @@
     <title>Title</title>
 </head>
 <body>
+<h4>Teams list</h4>
 <div id="tableDiv"></div>
-<!--&lt;!&ndash;Add bootstrap for form&ndash;&gt;-->
-<!--<form id='formId' action='' >ID:-->
-<!--    <input type='text'-->
-<!--           id='id'>-->
-<!--    </input>-->
-<!--    <br>Name:-->
-<!--    <input type='text'-->
-<!--           id='name'>-->
-<!--    </input>-->
-<!--    <br>Colour:-->
-<!--    <input type='text'-->
-<!--           id='colour'>-->
-<!--    </input>-->
-<!--    <br>-->
-<!--    <button type='submit'-->
-<!--            id='submitButton'-->
-<!--            onclick="postTeam()">-->
-<!--        Submit-->
-<!--    </button>-->
-<!--</form>-->
-<form method="post"><br><br>
-    Name :<input type="text" name="name" id="name"/><br><br>
-    <input type="submit" value="submit" id="save_data"/>
-</form>
-<script>
-$(document).ready(function() {
-$("#save_data").click(function() {
-	alert("succeess");
-        $.ajax({
-            url: "http://localhost:8080/team/createTeam",
-            type: "POST",
-            dataType: JSON,
-            data: {
-					name:$('#name').val()
-					},
-            success : function(data){
-            alert(data);
-            }
-        });
-
-});
-});
-</script>
+<h4>Form</h4>
+<div id="formDiv"></div>
 </body>
 </html>
