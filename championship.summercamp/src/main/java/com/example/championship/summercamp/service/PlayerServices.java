@@ -45,6 +45,10 @@ public class PlayerServices {
     public List<Player> findByLastName(String lastName){return playerRepository.findByLastName(lastName);}
     public List<Player> findByNumber(Integer number){return playerRepository.findByNumber(number);}
     public List<Player> findByAge(Integer age){return playerRepository.findByAge(age);}
+    public List<Player> findByTeamCaptainId(Integer teamCaptainId){return playerRepository.findByTeamCaptainId(teamCaptainId);}
+    public List<Player> findByTeamId(Integer teamId){return playerRepository.findByTeamId(teamId);}
+
+    public List<Player> findByTeamCaptainIsNull(){return playerRepository.findByTeamCaptainIsNull();}
     //Sorts
     public List<Player> getAll(){
         return playerRepository.findAll();

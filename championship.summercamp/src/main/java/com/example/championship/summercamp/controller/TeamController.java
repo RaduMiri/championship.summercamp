@@ -47,8 +47,6 @@ public class TeamController {
     public List<Team> getAllTeams(){
         return teamServices.getAll();
     }
-//    @GetMapping("/findByOrderByIdAsc")
-//    public List<Team> findByOrderByIdAsc(){return teamServices.findByOrderByIdAsc();}
     @GetMapping("/findByOrderByNameAsc")
     public List<Team> findByOrderByNameAsc(){return teamServices.findByOrderByNameAsc();}
     @GetMapping("/findByOrderByColourAsc")
@@ -59,6 +57,10 @@ public class TeamController {
     public List<Team> findByOrderByNameDesc(){return teamServices.findByOrderByNameDesc();}
     @GetMapping("/findByOrderByColourDesc")
     public List<Team> findByOrderByColourDesc(){return teamServices.findByOrderByColourDesc();}
+    @GetMapping("/findByOrderByCaptainFirstNameAscCaptainLastNameAsc")
+    public List<Team> findByOrderByCaptainFirstNameAscCaptainLastNameAsc(){return teamServices.findByOrderByCaptainFirstNameAscCaptainLastNameAsc();}
+    @GetMapping("/findByOrderByCaptainFirstNameDescCaptainLastNameDesc")
+    public List<Team> findByOrderByCaptainFirstNameDescCaptainLastNameDesc(){return teamServices.findByOrderByCaptainFirstNameDescCaptainLastNameDesc();}
 
    //I don't have many batch methods
 }

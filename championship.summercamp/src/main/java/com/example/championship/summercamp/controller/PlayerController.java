@@ -40,9 +40,16 @@ public class PlayerController {
     public List<Player> findByAge(@PathVariable Integer age) {return playerServices.findByAge(age);}
     @GetMapping("/findByNumber/{number}")
     public List<Player> findByNumber(@PathVariable Integer number) {return playerServices.findByNumber(number);}
+    @GetMapping("/findByTeamCaptainId/{teamCaptainId}")
+    public List<Player> findByTeamCaptainId(@PathVariable Integer teamCaptainId){return playerServices.findByTeamCaptainId(teamCaptainId);}
+    @GetMapping("/findByTeamId/{teamId}")
+    public List<Player> findByTeamId(Integer teamId){return playerServices.findByTeamId(teamId);}
+
+    @GetMapping("/findByTeamCaptainIsNull")
+    public List<Player> findByTeamCaptainIsNull(){return playerServices.findByTeamCaptainIsNull();}
 
     //Sorts
-    @GetMapping({"/findByOrderByIdDesc", "/all"})
+    @GetMapping({"/findByOrderByIdAsc", "/all"})
     public List<Player> getAllPlayers(){return playerServices.getAll();}
     @GetMapping("/findByOrderByFirstNameAsc")
     public List<Player> findByOrderByFirstNameAsc(){return playerServices.findByOrderByFirstNameAsc();}

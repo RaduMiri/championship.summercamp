@@ -2,7 +2,6 @@ $(document).ready(function() {
     getTeamData();
     getPlayerData();
 });
-
 function getTeamData(){
     $.ajax({
         url : 'http://localhost:8080/team/all',
@@ -18,10 +17,9 @@ function getTeamData(){
         }
     });
 }
-
-function getPlayerData(){ //TODO:Only import players that are not captains
+function getPlayerData(){
     $.ajax({
-        url : 'http://localhost:8080/player/all',
+        url : 'http://localhost:8080/player/findByTeamCaptainIsNull',
         type : 'GET',
         dataType:'json',
         success : function(playerData) {
@@ -34,18 +32,115 @@ function getPlayerData(){ //TODO:Only import players that are not captains
         }
     });
 }
-
+//Sort functions
+function getTeamNameAsc(){
+    $.ajax({
+        url : 'http://localhost:8080/team/findByOrderByNameAsc',
+        type : 'GET',
+        dataType:'json',
+        success : function(data) {
+             $("#teamTable").remove();
+             makeTable($("#tableDiv"), data);
+        },
+        error : function(request,error)
+        {
+            return [];
+            alert("Request: "+JSON.stringify(request));
+        }
+    });
+}
+function getTeamNameDesc(){
+    $.ajax({
+        url : 'http://localhost:8080/team/findByOrderByNameDesc',
+        type : 'GET',
+        dataType:'json',
+        success : function(data) {
+             $("#teamTable").remove();
+             makeTable($("#tableDiv"), data);
+        },
+        error : function(request,error)
+        {
+            return [];
+            alert("Request: "+JSON.stringify(request));
+        }
+    });
+}
+function getTeamCaptainAsc(){
+    $.ajax({
+        url : 'http://localhost:8080/team/findByOrderByCaptainFirstNameAscCaptainLastNameAsc',
+        type : 'GET',
+        dataType:'json',
+        success : function(data) {
+             $("#teamTable").remove();
+             makeTable($("#tableDiv"), data);
+        },
+        error : function(request,error)
+        {
+            return [];
+            alert("Request: "+JSON.stringify(request));
+        }
+    });
+}
+function getTeamCaptainDesc(){
+    $.ajax({
+        url : 'http://localhost:8080/team/findByOrderByCaptainFirstNameDescCaptainLastNameDesc',
+        type : 'GET',
+        dataType:'json',
+        success : function(data) {
+             $("#teamTable").remove();
+             makeTable($("#tableDiv"), data);
+        },
+        error : function(request,error)
+        {
+            return [];
+            alert("Request: "+JSON.stringify(request));
+        }
+    });
+}
+function getTeamColourAsc(){
+    $.ajax({
+        url : 'http://localhost:8080/team/findByOrderByColourAsc',
+        type : 'GET',
+        dataType:'json',
+        success : function(data) {
+             $("#teamTable").remove();
+             makeTable($("#tableDiv"), data);
+        },
+        error : function(request,error)
+        {
+            return [];
+            alert("Request: "+JSON.stringify(request));
+        }
+    });
+}
+function getTeamColourDesc(){
+    $.ajax({
+        url : 'http://localhost:8080/team/findByOrderByColourDesc',
+        type : 'GET',
+        dataType:'json',
+        success : function(data) {
+             $("#teamTable").remove();
+             makeTable($("#tableDiv"), data);
+        },
+        error : function(request,error)
+        {
+            return [];
+            alert("Request: "+JSON.stringify(request));
+        }
+    });
+}
+//
 function makeTable(container, data) {
     var table = $("<table/>").addClass('table table-bordered table-striped').attr('id', 'teamTable');
     var row = $("<tr/>");
-    row.append("<td>" + "ID" + "</td>");
-    row.append("<td>" + "Name" + "</td>");
-    row.append("<td>" + "Captain" + "</td>");
-    row.append("<td>" + "Colour" + "</td>");
+    //row.append("<td>ID<a href id='idAsc' style='float:right'>↑</a><a href id='idDesc' style='float:right'>↓</a></td>");
+    row.append("<td>Name<a href='#' id='nameDesc' style='float:right' onclick='getTeamNameDesc()'>↓</a><a href='#' id='nameAsc' style='float:right' onclick='getTeamNameAsc()'>↑</a></td>");
+    row.append("<td>Captain<a href='#' id='captainDesc' style='float:right' onclick='getTeamCaptainDesc()'>↓</a><a href='#' id='captainAsc' style='float:right' onclick='getTeamCaptainAsc()'>↑</a></td>");
+    row.append("<td>Colour<a href='#' id='colourDesc' style='float:right' onclick='getTeamColourDesc()'>↓</a><a href='#' id='colourAsc' style='float:right' onclick='getTeamColourAsc()'>↑</a></td>");
     table.append(row);
     $.each(data, function(rowIndex, r) {
         var row = $("<tr/>");
-        row.append("<td>" + r.id + "</td>");
+//        row.append("<td>" + r.id + "</td>");
         if(r.name!=null)
         row.append("<td>" + r.name + "</td>");
         else
@@ -69,6 +164,8 @@ function makeForm(container, playerData){
     var form = $("<form/>");
     form.append('Name:<input type="text" name="name" id="name"/><br>');
     var select = $("<select/>");
+    var option = $("<option/>").attr('name', "empty");;
+    select.append(option).attr('id', 'captain');
     $.each(playerData, function(i, element){
         if(element.firstName!=null){
             var text = element.firstName;
@@ -76,7 +173,7 @@ function makeForm(container, playerData){
                  text += " "+ element.lastName;
         }
         var option = $("<option/>").text(text).attr('name', element.id);
-        select.append(option).attr('id', 'captain');//TODO:Add class/container from Bootstrap
+        select.append(option);//TODO:Add class/container from Bootstrap
     });
     form.append("Captain:");
     form.append(select);
@@ -87,11 +184,12 @@ function makeForm(container, playerData){
 }
 
 function postTeam(){
- var data = {name:document.getElementById('name').value,
-             captain:{id:$("#captain option:selected").attr("name")}
+    var data = {name:document.getElementById('name').value,
 //             colour:document.getElementById('colour').value
              };
-             data.colour=document.getElementById('colour').value;
+    if($("#captain option:selected").attr("name")!="empty")
+        data.captain={id:$("#captain option:selected").attr("name")}
+    data.colour=document.getElementById('colour').value;
     $.ajax({
             url : 'http://localhost:8080/team/createTeam',
             type : 'POST',

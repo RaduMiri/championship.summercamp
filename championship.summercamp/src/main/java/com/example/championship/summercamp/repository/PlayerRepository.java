@@ -13,8 +13,12 @@ public interface PlayerRepository extends JpaRepository<Player, Integer> {
     List<Player> findByLastName(String lastName);
     List<Player> findByAge(Integer age);
     List<Player> findByNumber(Integer number);
-    //TODO:List<Player> findByTeamId(Team team)(Integer id);
+    List<Player> findByTeamCaptainId(Integer teamCaptainId); //for nested objects just mention the attribute you want to execute the search by
+    List<Player> findByTeamId(Integer teamId);
+
+    List<Player> findByTeamCaptainIsNull();
     //Sorts
+    //TODO:Sorts by teamcap and team, now that I know they work
     List<Player> findByOrderByFirstNameAsc();
     List<Player> findByOrderByLastNameAsc();
     List<Player> findByOrderByAgeAsc();

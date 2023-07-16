@@ -36,15 +36,15 @@ public class TeamServices {
     }
     public List<Team> findByName(String name) {return teamRepository.findByName(name);}
     public List<Team> findByColour(String colour){return teamRepository.findByColour(colour);}
-    //public Team findByCaptainID(Integer id){return null;} //not done
     //Sorts
     public List<Team> getAll(){
         return teamRepository.findAll();
     }
-    //    public List<Team> findByOrderByIdAsc(){return teamRepository.findByOrderByIdAsc();}
     public List<Team> findByOrderByNameAsc(){return teamRepository.findByOrderByNameAsc();}
     public List<Team> findByOrderByColourAsc(){return teamRepository.findByOrderByColourAsc();}
     public List<Team> findByOrderByIdDesc(){return teamRepository.findByOrderByIdDesc();}
     public List<Team> findByOrderByNameDesc(){return teamRepository.findByOrderByNameDesc();}
     public List<Team> findByOrderByColourDesc(){return teamRepository.findByOrderByColourDesc();}
+    public List<Team> findByOrderByCaptainFirstNameAscCaptainLastNameAsc(){return teamRepository.findByOrderByCaptainFirstNameAscCaptainLastNameAsc();}
+    public List<Team> findByOrderByCaptainFirstNameDescCaptainLastNameDesc(){return teamRepository.findByOrderByCaptainFirstNameDescCaptainLastNameDesc();}
 }
