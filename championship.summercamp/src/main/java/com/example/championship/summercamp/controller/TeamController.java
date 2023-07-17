@@ -16,9 +16,7 @@ public class TeamController {
     //CRUD
     //Create
     @PostMapping("/createTeam")
-    public Team postTeam(@RequestBody Team newTeam){
-        return teamServices.createTeam(newTeam);
-    }
+    public Team postTeam(@RequestBody Team newTeam){return teamServices.createTeam(newTeam);}
 
     //Update
     @PutMapping("/updateTeam/{id}")
@@ -39,7 +37,6 @@ public class TeamController {
     public List<Team> findByName(@PathVariable String name) {return teamServices.findByName(name);}
     @GetMapping("/findByColour/{colour}")
     public List<Team> findByColour(@PathVariable String colour) {return teamServices.findByColour(colour);}
-    //GetMapping("/findByCaptainID/{captainId}")
 
     //Sorts
     //TODO:This is sorted by id I think
@@ -61,6 +58,4 @@ public class TeamController {
     public List<Team> findByOrderByCaptainFirstNameAscCaptainLastNameAsc(){return teamServices.findByOrderByCaptainFirstNameAscCaptainLastNameAsc();}
     @GetMapping("/findByOrderByCaptainFirstNameDescCaptainLastNameDesc")
     public List<Team> findByOrderByCaptainFirstNameDescCaptainLastNameDesc(){return teamServices.findByOrderByCaptainFirstNameDescCaptainLastNameDesc();}
-
-   //I don't have many batch methods
 }

@@ -11,10 +11,6 @@ public class PlayerViewer {
     @Autowired
     private PlayerServices playerServices;
 
-    @GetMapping({"/listAllPlayers"})
-    public ModelAndView listAllPlayers() {
-        ModelAndView mav = new ModelAndView("list-players");
-        mav.addObject("players", playerServices.getAll());
-        return mav;
-    }
+    @GetMapping("/getPlayers")
+    public String getPlayers(){return "playerTemplate";}
 }

@@ -8,6 +8,7 @@ function getTeamData(){
         type : 'GET',
         dataType:'json',
         success : function(data) {
+             $("#teamTable").remove();
              makeTable($("#tableDiv"), data);
         },
         error : function(request,error)
@@ -133,14 +134,12 @@ function getTeamColourDesc(){
 function makeTable(container, data) {
     var table = $("<table/>").addClass('table table-bordered table-striped').attr('id', 'teamTable');
     var row = $("<tr/>");
-    //row.append("<td>ID<a href id='idAsc' style='float:right'>↑</a><a href id='idDesc' style='float:right'>↓</a></td>");
     row.append("<td>Name<a href='#' id='nameDesc' style='float:right' onclick='getTeamNameDesc()'>↓</a><a href='#' id='nameAsc' style='float:right' onclick='getTeamNameAsc()'>↑</a></td>");
     row.append("<td>Captain<a href='#' id='captainDesc' style='float:right' onclick='getTeamCaptainDesc()'>↓</a><a href='#' id='captainAsc' style='float:right' onclick='getTeamCaptainAsc()'>↑</a></td>");
     row.append("<td>Colour<a href='#' id='colourDesc' style='float:right' onclick='getTeamColourDesc()'>↓</a><a href='#' id='colourAsc' style='float:right' onclick='getTeamColourAsc()'>↑</a></td>");
     table.append(row);
     $.each(data, function(rowIndex, r) {
         var row = $("<tr/>");
-//        row.append("<td>" + r.id + "</td>");
         if(r.name!=null)
         row.append("<td>" + r.name + "</td>");
         else
@@ -184,11 +183,10 @@ function makeForm(container, playerData){
 }
 
 function postTeam(){
-    var data = {name:document.getElementById('name').value,
-//             colour:document.getElementById('colour').value
-             };
-    if($("#captain option:selected").attr("name")!="empty")
+    var data = {name:document.getElementById('name').value};
+    if($("#captain option:selected").attr("name")!="empty"){
         data.captain={id:$("#captain option:selected").attr("name")}
+    }
     data.colour=document.getElementById('colour').value;
     $.ajax({
             url : 'http://localhost:8080/team/createTeam',
@@ -207,12 +205,13 @@ function postTeam(){
 }
 
 function deleteTeam(id){
+//TODO:Cascade, set in player team null
     var deleteUrl = "http://localhost:8080/team/delete/" + id;
     $.ajax({
                 url : deleteUrl,
                 type : 'DELETE',
                 success : function(data) {
-                     console.log("Delete success");
+                     getTeamData();
                 },
                 error : function(request,error)
                 {

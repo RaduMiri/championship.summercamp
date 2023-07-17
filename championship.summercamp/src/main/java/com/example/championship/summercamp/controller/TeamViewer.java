@@ -12,15 +12,6 @@ import org.springframework.web.servlet.ModelAndView;
 public class TeamViewer {
     @Autowired
     private TeamServices teamServices;
-
-//    @GetMapping({"/listAllTeams"})
-//    public ModelAndView listAllTeams() {
-//        ModelAndView mav = new ModelAndView("list-teams");
-//        mav.addObject("teams", teamServices.getAll());
-//        return mav;
-//    }
-
     @GetMapping("/getTeams")
-    public String getTeamsAjax(){return "teamJS";}
-
+    public String getTeams(){return "teamTemplate";}
 }

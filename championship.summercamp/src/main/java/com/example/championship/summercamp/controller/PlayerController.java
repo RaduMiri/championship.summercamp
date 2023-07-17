@@ -59,6 +59,8 @@ public class PlayerController {
     public List<Player> findByOrderByAgeAsc(){return playerServices.findByOrderByAgeAsc();}
     @GetMapping("/findByOrderByNumberAsc")
     public List<Player> findByOrderByNumberAsc(){return playerServices.findByOrderByNumberAsc();}
+    @GetMapping("/findByOrderByTeamColourAscTeamNameAsc")
+    public List<Player> findByOrderByTeamColourAscTeamNameAsc(){return playerServices.findByOrderByTeamColourAscTeamNameAsc();}
 
     @GetMapping("/findByOrderByIdDesc")
     public List<Player> findByOrderByIdDesc(){return playerServices.findByOrderByIdDesc();}
@@ -70,4 +72,6 @@ public class PlayerController {
     public List<Player> findByOrderByAgeDesc(){return playerServices.findByOrderByAgeDesc();}
     @GetMapping("/findByOrderByNumberDesc")
     public List<Player> findByOrderByNumberDesc(){return playerServices.findByOrderByNumberDesc();}
+    @GetMapping("/findByOrderByTeamColourDescTeamNameDesc")
+    public List<Player> findByOrderByTeamColourDescTeamNameDesc(){return playerServices.findByOrderByTeamColourDescTeamNameDesc();}
 }
