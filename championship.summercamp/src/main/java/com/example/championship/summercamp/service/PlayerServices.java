@@ -1,7 +1,6 @@
 package com.example.championship.summercamp.service;
 
 import com.example.championship.summercamp.model.Player;
-import com.example.championship.summercamp.model.Team;
 import com.example.championship.summercamp.repository.PlayerRepository;
 import com.example.championship.summercamp.repository.TeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +18,8 @@ public class PlayerServices {
     public Player createPlayer(Player newPlayer){return playerRepository.save(newPlayer);}
 
     public Player updatePlayer(Player newPlayer, Integer id){
-        if(playerRepository.existsById(id)==false)
-            return null; //print message somehow
+//        if(playerRepository.existsById(id)==false)
+//            return null; //print message somehow
         Player dbPlayer = playerRepository.getOne(id);
         if(newPlayer.getFirstName()!=null)
             dbPlayer.setFirstName(newPlayer.getFirstName());

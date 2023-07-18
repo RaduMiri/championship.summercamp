@@ -30,7 +30,7 @@ public class TeamServices {
         }
         if(newTeam.getColour()!=null)
             dbTeam.setColour(newTeam.getColour());
-        return teamRepository.save(newTeam);
+        return teamRepository.save(dbTeam);
     }
     //Deletes
     public void deleteTeam(Integer id) {
