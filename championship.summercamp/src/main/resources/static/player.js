@@ -252,7 +252,6 @@ function makeTable(container, data) {
         var text = "";
         var flagCaptain=1;
         $.each(tempTeamData,function(i, element){
-        //TODO:ERROR deleteing a captain
             if(r.id==element.captain?.id){
                 if(element.name!=null){
                     text +=element.colour+" "+element.name;
@@ -305,6 +304,7 @@ function makeForm(container, teamData){
     return container.append(form);
 }
 function deletePlayer(id){
+    //TODO:Add check when deleting the captain of a team to confirm that the team will be deleted as well so you should first change the captain of the team and make sure the cascade deletes the team
     var deleteUrl = "http://localhost:8080/player/delete/" + id;
     $.ajax({
                 url : deleteUrl,
