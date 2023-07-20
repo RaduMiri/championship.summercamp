@@ -14,10 +14,10 @@ public class PlayerController {
     private PlayerServices playerServices;
 
     //CRUD
-    @PostMapping("/createPlayer")
+    @PostMapping("/create")
     public Player postPlayer(@RequestBody Player newPlayer){return playerServices.createPlayer(newPlayer);}
 
-    @PutMapping("/updatePlayer/{id}")
+    @PutMapping("/update/{id}")
     public Player updatePlayer(@RequestBody Player newPlayer, @PathVariable Integer id){return playerServices.updatePlayer(newPlayer, id);}
 
     @DeleteMapping("/delete/{id}")
@@ -44,9 +44,14 @@ public class PlayerController {
     public List<Player> findByTeamCaptainId(@PathVariable Integer teamCaptainId){return playerServices.findByTeamCaptainId(teamCaptainId);}
     @GetMapping("/findByTeamId/{teamId}")
     public List<Player> findByTeamId(Integer teamId){return playerServices.findByTeamId(teamId);}
-
+    @GetMapping("/findByFirstNameLastNameAgeNumberTeamNameTeamColour/{string}")
+    public List<Player> findByFirstNameLastNameAgeNumberTeamNameTeamColour(@PathVariable String string){return playerServices.findByFirstNameLastNameAgeNumberTeamNameTeamColour(string);}
     @GetMapping("/findByTeamCaptainIsNull")
     public List<Player> findByTeamCaptainIsNull(){return playerServices.findByTeamCaptainIsNull();}
+    @GetMapping("/findByTeamCaptainIsNotNull")
+    public List<Player> findByTeamCaptainIsNotNull(){return playerServices.findByTeamCaptainIsNotNull();}
+    @GetMapping("/isPlayerCaptain/{id}")
+    public Boolean isPlayerCaptain(@PathVariable Integer id) {return playerServices.isPlayerCaptain(id);}
 
     //Sorts
     @GetMapping({"/findByOrderByIdAsc", "/all"})

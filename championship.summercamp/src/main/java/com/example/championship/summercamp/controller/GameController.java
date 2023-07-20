@@ -13,13 +13,13 @@ public class GameController {
     @Autowired
     private GameServices gameServices;
 
-    @PostMapping("/createGame")
+    @PostMapping("/create")
     public Game postGame(@RequestBody Game newGame){
         return gameServices.createGame(newGame);
     }
 
     //set the proper attributes
-    @PutMapping("/updateGame/{id}")
+    @PutMapping("/update/{id}")
     public Game updateGame(@RequestBody Game newGame, @PathVariable Integer id){return gameServices.updateGame(newGame,id);}
 
     @DeleteMapping("/delete/{id}")

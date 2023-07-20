@@ -13,6 +13,7 @@ public interface TeamRepository extends JpaRepository<Team, Integer> {
     List<Team> findByColour(String colour);
     List<Team> findByCaptainFirstName(String firstName);
     List<Team> findByCaptainLastName(String lastName);
+    Boolean existsByCaptainId(Integer playerId);
     //TODO: JPA contains
     //Sorts
     //Asc

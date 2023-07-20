@@ -5,8 +5,8 @@ import com.example.championship.summercamp.repository.PlayerRepository;
 import com.example.championship.summercamp.repository.TeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
+
 
 @Service
 public class PlayerServices {
@@ -18,8 +18,6 @@ public class PlayerServices {
     public Player createPlayer(Player newPlayer){return playerRepository.save(newPlayer);}
 
     public Player updatePlayer(Player newPlayer, Integer id){
-//        if(playerRepository.existsById(id)==false)
-//            return null; //print message somehow
         Player dbPlayer = playerRepository.getOne(id);
         if(newPlayer.getFirstName()!=null)
             dbPlayer.setFirstName(newPlayer.getFirstName());
@@ -49,8 +47,23 @@ public class PlayerServices {
     public List<Player> findByAge(Integer age){return playerRepository.findByAge(age);}
     public List<Player> findByTeamCaptainId(Integer teamCaptainId){return playerRepository.findByTeamCaptainId(teamCaptainId);}
     public List<Player> findByTeamId(Integer teamId){return playerRepository.findByTeamId(teamId);}
-
+    public List<Player> findByFirstNameLastNameAgeNumberTeamNameTeamColour(String string) {
+        Integer age = parsePositiveInteger(string);
+        Integer number = age != null ? age : parsePositiveInteger(string);
+        return playerRepository.findBySearchStringAndAgeAndNumber(string, age, number);
+    }
+    private Integer parsePositiveInteger(String str) {
+        try {
+            int intValue = Integer.parseInt(str);
+            return intValue > 0 ? intValue : null;
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+    public Boolean isPlayerCaptain(Integer playerId) {return teamRepository.existsByCaptainId(playerId);}
     public List<Player> findByTeamCaptainIsNull(){return playerRepository.findByTeamCaptainIsNull();}
+    public List<Player> findByTeamCaptainIsNotNull(){return playerRepository.findByTeamCaptainIsNotNull();}
+
     //Sorts
     public List<Player> getAll(){
         return playerRepository.findAll();

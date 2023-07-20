@@ -15,11 +15,11 @@ public class TeamController {
 
     //CRUD
     //Create
-    @PostMapping("/createTeam")
+    @PostMapping("/create")
     public Team postTeam(@RequestBody Team newTeam){return teamServices.createTeam(newTeam);}
 
     //Update
-    @PutMapping("/updateTeam/{id}")
+    @PutMapping("/update/{id}")
     public Team updateTeam(@RequestBody Team newTeam, @PathVariable Integer id){return teamServices.updateTeam(newTeam,id);}
 
     //Deletes
