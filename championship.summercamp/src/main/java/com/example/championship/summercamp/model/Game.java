@@ -8,7 +8,7 @@ import lombok.*;
 public class Game {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    //TODO: Make table using gametype, cause each team plays a single game
+    //TODO: Make table using gameType, cause each team plays a single game
     private Integer id;
     private String gameType;
     private String field;
@@ -20,8 +20,5 @@ public class Game {
     @ManyToOne
     @JoinColumn (name = "team2")
     private Team team2;
-
-    //time TODO:research
-    //field
 }
 

@@ -583,7 +583,7 @@ function deleteObjectRequest(id) {
     }
   });
 }
-////Update
+//Update
 function updateObject(id, button) {
     //Setup getting the position of the data
     var row = $(button).closest('tr');
@@ -648,7 +648,7 @@ function updateObject(id, button) {
                 data.team = { id: $("#newTeam option:selected").attr("name") };
             }
         }
-    //TODO:This specific validation does not work no matter what I do
+    //TODO:This specific validation does not work no matter what I do, the answer may be add error with that instance of jquerry
     //Validation
 //    if (/Captain/.test(team)) {
 //        if (!validateInput("newFirstName") || !validateInput("newLastName") || !validateInput("newAge") || !validateInput("newNumber")) {

@@ -14,7 +14,7 @@ public interface PlayerRepository extends JpaRepository<Player, Integer> {
     List<Player> findByLastName(String lastName);
     List<Player> findByAge(Integer age);
     List<Player> findByNumber(Integer number);
-    List<Player> findByTeamCaptainId(Integer teamCaptainId); //for nested objects just mention the attribute you want to execute the search by
+    List<Player> findByTeamCaptainId(Integer teamCaptainId);
     List<Player> findByTeamId(Integer teamId);
     List<Player> findByTeamCaptainIsNull();
     List<Player> findByTeamCaptainIsNotNull();
@@ -26,7 +26,6 @@ public interface PlayerRepository extends JpaRepository<Player, Integer> {
             "OR p.team.name = :searchString " +
             "OR p.team.colour = :searchString")
     List<Player> findBySearchStringAndAgeAndNumber(String searchString, Integer age, Integer number);
-    Boolean existsByTeamCaptainId(Integer playerId);
 
     //Sorts
     List<Player> findByOrderByFirstNameAsc();

@@ -74,6 +74,7 @@ public class PlayerServices {
     public List<Player> findByOrderByNumberAsc(){return playerRepository.findByOrderByNumberAsc();}
     public List<Player> findByOrderByTeamColourAscTeamNameAsc(){return playerRepository.findByOrderByTeamColourAscTeamNameAsc();}
 
+
     public List<Player> findByOrderByIdDesc(){return playerRepository.findByOrderByIdDesc();}
     public List<Player> findByOrderByFirstNameDesc(){return playerRepository.findByOrderByFirstNameDesc();}
     public List<Player> findByOrderByLastNameDesc(){return playerRepository.findByOrderByLastNameDesc();}
