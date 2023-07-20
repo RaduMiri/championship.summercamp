@@ -11,7 +11,8 @@ public interface TeamRepository extends JpaRepository<Team, Integer> {
     //Filters
     List<Team> findByName(String name);
     List<Team> findByColour(String colour);
-    //TODO:simultaneous filters?
+    List<Team> findByCaptainFirstName(String firstName);
+    List<Team> findByCaptainLastName(String lastName);
     //TODO: JPA contains
     //Sorts
     //Asc

@@ -13,6 +13,7 @@ public class Team {
     private Integer id;
     private String name;
     private String colour;
+    //TODO:Score for game
     @OneToOne
     @JoinColumn(name = "captain_id", referencedColumnName = "id")
     private Player captain; //TODO: Captain should not be able to be assigned to a different team

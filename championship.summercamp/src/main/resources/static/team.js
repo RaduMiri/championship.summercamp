@@ -1,9 +1,12 @@
 $(document).ready(function() {
     getTeamData();
     getPlayerData();
+    setupFormClose();
 });
-var tempPlayerData; //maybe only retain id and names, because that is the least I need
-var tempTeamData //everything here is public except teamId
+
+var isFormVisible = false;
+var tempPlayerData;
+var tempTeamData;
 function getTeamData(){
     $.ajax({
         url : 'http://localhost:8080/team/all',
@@ -27,7 +30,8 @@ function getPlayerData(){
         type : 'GET',
         dataType:'json',
         success : function(playerData) {
-            tempPlayerData = playerData;
+             $("#teamForm").remove();
+             tempPlayerData = playerData;
              makeForm($("#formDiv"), playerData);
         },
         error : function(request,error)
@@ -45,7 +49,7 @@ function getTeamNameAsc(){
         dataType:'json',
         success : function(data) {
              $("#teamTable").remove();
-             makeTable($("#tableDiv"), data);
+             makeTable($("#tableDiv"), data,1);
         },
         error : function(request,error)
         {
@@ -61,7 +65,7 @@ function getTeamNameDesc(){
         dataType:'json',
         success : function(data) {
              $("#teamTable").remove();
-             makeTable($("#tableDiv"), data);
+             makeTable($("#tableDiv"), data,1);
         },
         error : function(request,error)
         {
@@ -77,7 +81,7 @@ function getTeamCaptainAsc(){
         dataType:'json',
         success : function(data) {
              $("#teamTable").remove();
-             makeTable($("#tableDiv"), data);
+             makeTable($("#tableDiv"), data,1);
         },
         error : function(request,error)
         {
@@ -109,7 +113,7 @@ function getTeamColourAsc(){
         dataType:'json',
         success : function(data) {
              $("#teamTable").remove();
-             makeTable($("#tableDiv"), data);
+             makeTable($("#tableDiv"), data,1);
         },
         error : function(request,error)
         {
@@ -125,7 +129,7 @@ function getTeamColourDesc(){
         dataType:'json',
         success : function(data) {
              $("#teamTable").remove();
-             makeTable($("#tableDiv"), data);
+             makeTable($("#tableDiv"), data,1);
         },
         error : function(request,error)
         {
@@ -136,47 +140,49 @@ function getTeamColourDesc(){
 }
 //
 function makeTable(container, data, currentPage) {
-    var pageSize = 5; // Number of teams per page
-    var totalPages = Math.ceil(data.length / pageSize); // Calculate total number of pages
+    var pageSize = 5; //teams per page
+    var totalPages = Math.ceil(data.length / pageSize);
     var table = $("<table/>").addClass('table table-bordered table-striped').attr('id', 'teamTable');
 
-    // Calculate start and end index for current page
     var startIndex = (currentPage - 1) * pageSize;
     var endIndex = startIndex + pageSize;
     var teamsToShow = data.slice(startIndex, endIndex);
 
     var row = $("<tr/>");
-    row.append("<td>Name<a href='#' id='nameDesc' style='float:right' onclick='getTeamNameDesc()'>↓</a><a href='#' id='nameAsc' style='float:right' onclick='getTeamNameAsc()'>↑</a></td>");
-    row.append("<td>Captain<a href='#' id='captainDesc' style='float:right' onclick='getTeamCaptainDesc()'>↓</a><a href='#' id='captainAsc' style='float:right' onclick='getTeamCaptainAsc()'>↑</a></td>");
-    row.append("<td>Colour<a href='#' id='colourDesc' style='float:right' onclick='getTeamColourDesc()'>↓</a><a href='#' id='colourAsc' style='float:right' onclick='getTeamColourAsc()'>↑</a></td>");
+    row.append("<th>Name<a href='#' id='nameDesc' style='float:right' onclick='getTeamNameDesc()'>↓</a><a href='#' id='nameAsc' style='float:right' onclick='getTeamNameAsc()'>↑</a></th>");
+    row.append("<th>Captain<a href='#' id='captainDesc' style='float:right' onclick='getTeamCaptainDesc()'>↓</a><a href='#' id='captainAsc' style='float:right' onclick='getTeamCaptainAsc()'>↑</a></th>");
+    row.append("<th>Colour<a href='#' id='colourDesc' style='float:right' onclick='getTeamColourDesc()'>↓</a><a href='#' id='colourAsc' style='float:right' onclick='getTeamColourAsc()'>↑</a></th>");
+    row.append("<th>Actions</th>");
     table.append(row);
-
-    $.each(teamsToShow, function(rowIndex, r) {
+    $.each(teamsToShow, function (rowIndex, r) {
       var row = $("<tr/>");
-      if (r.name != null)
-        row.append("<td>" + r.name + "</td>");
-      else
-        row.append("<td>" + "</td>"); //TODO:Message instead if empty
-      if (r.captain?.firstName != null)
-        row.append("<td id='" + r.captain?.id + "'>" + r.captain?.firstName + " " + r.captain?.lastName + "</td>");
-      else
-        row.append("<td>" + "</td>");
-      if (r.colour != null)
-        row.append("<td>" + r.colour + "</td>");
-      else
-        row.append("<td>" + "</td>");
-      table.append(row);
-      row.append('<td><input type="button" value="Delete" onclick="deleteTeam(' + r.id + ')"></td>');
-      table.append(row);
-      row.append('<td><input type="button" value="Update" onclick="updateTeam(' + r.id + ', this)"></td>');
+      if (r.name != null) row.append("<td class='table-cell'>" + r.name + "</td>");
+      else row.append("<td class='table-cell'>" + "</td>");
+      if (r.captain?.firstName != null) row.append("<td class='table-cell' id='" + r.captain?.id + "'>" + r.captain?.firstName + " " + r.captain?.lastName + "</td>");
+      else row.append("<td class='table-cell'>" + "</td>");
+      if (r.colour != null) row.append("<td class='table-cell'>" + r.colour + "</td>");
+      else row.append("<td class='table-cell'>" + "</td>");
+      var deleteButton = $('<input type="button" value="Delete" class="btn-danger">');
+      deleteButton.on('click', function () {
+        deleteTeam(r.id, this); // Pass the button element (this) to deleteTeam function
+      });
+      var updateButton = $('<input type="button" value="Update" class="btn-info">');
+      updateButton.on('click', function () {
+        updateTeam(r.id, this); // Pass the button element (this) to updateTeam function
+      });
+      var actionsCell = $("<td/>").append(deleteButton, updateButton).addClass('table-cell');
+      row.append(actionsCell);
       table.append(row);
     });
-
     container.empty().append(table);
 
-    // Pagination controls
-    var pagination = $('<div class="pagination"></div>');
-    var prevButton = $('<a href="#" class="prev">Prev</a>');
+    var pagination = $('.pagination'); // Check if pagination div already exists
+    if (pagination.length === 0) {
+        pagination = $('<div class="pagination d-flex justify-content-center align-items-center"></div>'); // Create pagination div
+    } else {
+        pagination.empty(); // Clear existing content in pagination div
+    }
+    var prevButton = $('<a href="#" class="prev">Prev</a>'); //align middle and maybe make button
     var nextButton = $('<a href="#" class="next">Next</a>');
     pagination.append(prevButton);
 
@@ -189,7 +195,8 @@ function makeTable(container, data, currentPage) {
     }
 
     pagination.append(nextButton);
-    container.append(pagination);
+
+    pagination.insertAfter('#toggleFormButtonContainer');
 
     prevButton.on('click', function (e) {
       e.preventDefault();
@@ -205,37 +212,35 @@ function makeTable(container, data, currentPage) {
       }
     });
 
-    // Handle page number clicks
     $('.page').on('click', function (e) {
       e.preventDefault();
       var pageNum = parseInt($(this).text());
       makeTable(container, data, pageNum); // Update table for selected page
     });
 
-  }
-
-
-function makeForm(container, playerData){
-    var form = $("<form/>");
-    form.append('Name:<input type="text" name="name" id="name"/><br>');
-    var select = $("<select/>");
-    var option = $("<option/>").attr('name', "empty");;
-    select.append(option).attr('id', 'captain');
-    $.each(playerData, function(i, element){
-        if(element.firstName!=null){
-            var text = element.firstName;
-            if(element.lastName!=null)
-                 text += " "+ element.lastName;
-        }
-        var option = $("<option/>").text(text).attr('name', element.id);
-        select.append(option);//TODO:Add class/container from Bootstrap
-    });
-    form.append("Captain:");
-    form.append(select);
-    form.append("<br>");
-    form.append('Colour:<input type="text" name="name" id="colour"/><br>');
-    form.append('<input type="submit" value="submit" id="save_data" onclick="postTeam(event)"/>')
-    return container.append(form);
+}
+function makeForm(container, playerData) {
+  var form = $("<form/>").attr("id", "teamForm");
+  form.append('<div class="form-group"><label for="name">Name:</label><input type="text" name="name" id="name" class="form-control"/></div>');
+  var div = $("<div/>").addClass("form-group");
+  div.append('<label for="captain">Captain:</label>');
+  var select = $("<select/>").addClass("custom-select").attr("id", "captain").attr("onfocus",'this.size=5;').attr("onblur",'this.size=1;').attr("onchange",'this.size=1; this.blur();');
+  var option = $("<option/>").attr('name', "empty");
+  select.append(option);
+  $.each(playerData, function(i, element) {
+    if (element.firstName != null) {
+      var text = element.firstName;
+      if (element.lastName != null)
+        text += " " + element.lastName;
+    }
+    var option = $("<option/>").text(text).attr('name', element.id);
+    select.append(option);
+  });
+  div.append(select);
+  form.append(div);
+  form.append('<div class="form-group"><label for="colour">Colour:</label><input type="text" name="name" id="colour" class="form-control"/></div>');
+  form.append('<input type="submit" value="Submit" id="save_data" onclick="postTeam(event)" class="btn-success"/>');
+  return container.append(form);
 }
 function postTeam(event){
     event.preventDefault(); //prevents page refresh when submitting
@@ -252,6 +257,7 @@ function postTeam(event){
         data.captain={id:$("#captain option:selected").attr("name")}
     }
     if (!validateAllInputs(data)) return false;
+    if(!validateCaptain("captain")) return false;
     $.ajax({
             url : 'http://localhost:8080/team/createTeam',
             type : 'POST',
@@ -263,7 +269,8 @@ function postTeam(event){
                     document.getElementById('colour').value = '';
                     $("#captain").val("empty");
                     getTeamData();
-                    getPlayerData; //it doesn't update the form after submitting
+                    getPlayerData();
+                    toggleForm();
             },
             error : function(request,error)
             {
@@ -272,21 +279,30 @@ function postTeam(event){
             }
         });
 }
-function deleteTeam(id){
-    var deleteUrl = "http://localhost:8080/team/delete/" + id;
-    $.ajax({
-        url : deleteUrl,
-        type : 'DELETE',
-        success : function(data) {
-             getTeamData();
-        },
-        error : function(request,error)
-        {
-            return [];
-            alert("Request: "+JSON.stringify(request));
-        }
-    });
+
+function deleteTeam(id, button) {
+  var confirmation = confirm("Are you sure you want to delete this team?");
+  if (confirmation) {
+    deleteTeamRequest(id);
+  }
 }
+
+function deleteTeamRequest(id) {
+  var deleteUrl = "http://localhost:8080/team/delete/" + id;
+  $.ajax({
+    url: deleteUrl,
+    type: 'DELETE',
+    success: function(data) {
+      getTeamData();
+      getPlayerData();
+    },
+    error: function(request, error) {
+      return [];
+      alert("Request: " + JSON.stringify(request));
+    }
+  });
+}
+
 function updateTeam(id, button) {
   var row = $(button).closest('tr');
   var name = row.find('td:eq(0)').text();
@@ -294,9 +310,9 @@ function updateTeam(id, button) {
   var captainId = row.find('td:eq(1)').attr('id');
   var colour = row.find('td:eq(2)').text();
   var newRow = $("<tr/>");
-  newRow.append('<td><input type="text" name="newName" id="newName" value="' + name + '"/></td>');
-  var select = $("<select/>");
-  var option = $("<option/>").attr('name', "empty");
+  newRow.append('<td><input type="text" name="newName" id="newName" value="' + name + '" class="form-control-plaintext pulse-animation"/></td>');
+  var select = $("<select/>").addClass("form-control-plaintext pulse-animation").attr("onfocus",'this.size=5;').attr("onblur",'this.size=1;').attr("onchange",'this.size=1; this.blur();');
+  var option = $("<option/>").text(captain).attr('name', captainId).attr("id", "newCaptainName");
   select.append(option).attr('id', 'newCaptain');
   $.each(tempPlayerData, function (i, element) {
     if (element.firstName != null) {
@@ -313,20 +329,19 @@ function updateTeam(id, button) {
   }
   select.find('option[name="' + captainId + '"]').prop('selected', true);
   newRow.append(select);
-  newRow.append('<td><input type="text" name="newColour" id="newColour" value="' + colour + '"/></td>');
-  var cancelButton = $('<input type="button" value="Cancel"/>');
+  newRow.append('<td><input type="text" name="newColour" id="newColour" value="' + colour + '" class="form-control-plaintext pulse-animation"/></td>');
+  var cancelButton = $('<input type="button" value="Cancel" class="btn-danger"/>');
   cancelButton.on('click', function () {
-    newRow.replaceWith(row);
+    restoreTableRow(row); // Restore the original table row
   });
-  newRow.append($('<td/>').append(cancelButton));
-  var submitButton = $('<input type="button" value="Submit" id="submitUpdate"/>');
+  var submitButton = $('<input type="button" value="Submit" id="submitUpdate" class="btn-success"/>');
   submitButton.on('click', function () {
     var data = { name: newRow.find('#newName').val() };
     if ($("#newCaptain option:selected").attr("name") != "empty") {
       data.captain = { id: $("#newCaptain option:selected").attr("name") };
     }
     data.colour = newRow.find('#newColour').val();
-    if (!validateInput("newName") || !validateInput("newColour") || !validateAllInputs(data)) {
+    if (!validateInput("newName") || !validateInput("newColour") || !validateCaptain("newCaptain")) {
       return false;
     }
     var updateUrl = "http://localhost:8080/team/updateTeam/" + id;
@@ -344,8 +359,19 @@ function updateTeam(id, button) {
       }
     });
   });
-  newRow.append($('<td/>').append(submitButton));
-  row.replaceWith(newRow);
+  newRow.append($('<td/>').append(cancelButton, submitButton));
+  replaceTableRow(row, newRow); // Replace the original table row with the update form
+}
+
+function replaceTableRow(oldRow, newRow) {
+  oldRow.hide(); // Hide the original row
+  newRow.insertAfter(oldRow); // Insert the new row after the original row
+}
+
+function restoreTableRow(row) {
+  var oldRow = row.next(); // Get the next row (update form row)
+  row.show(); // Show the original row
+  oldRow.remove(); // Remove the update form row
 }
 function validateInput(myInput) {
     var input = document.getElementById(myInput);
@@ -363,11 +389,20 @@ function clearErrors() {
         input.classList.remove('error');
         var popup = input.parentNode.querySelector('.popup');
         if (popup) {
-            popup.remove();
+                popup.remove();
         }
     });
 }
-
+function validateCaptain(id){
+  var captainSelect = $('#'+id);
+  var selectedOption = $("#"+id+" option:selected");
+  var selectedOptionName = selectedOption.attr('name');
+  if (selectedOptionName === 'empty') {
+    addErrors(captainSelect, 'Please select a captain.');
+    return false;
+  }
+  return true;
+}
 function validateAllInputs(data) {
     for (var i = 1; i < tempTeamData.length; i++) {
         var team = tempTeamData[i];
@@ -380,22 +415,78 @@ function validateAllInputs(data) {
             addErrors(colourInput, 'This name and colour combination already exists.');
             return false;
         }
-          var captainSelect = document.getElementById('captain');
-          var selectedOption = captainSelect.options[captainSelect.selectedIndex];
-          var selectedOptionName = selectedOption.getAttribute('name');
-          if (selectedOptionName === 'empty') {
-            addErrors(captainSelect, 'Please select a captain.');
-            return false;
-          }
     }
     return true;
 }
 
 function addErrors(input, errorMessage) {
     clearErrors();
+    if (input instanceof jQuery) { //I don't understand how this works but seems interesting
+        input = input[0]; // Extract the raw DOM element from the jQuery object
+    }
     input.classList.add('error');
     var popup = document.createElement('span');
     popup.className = 'popup';
     popup.textContent = errorMessage;
     input.parentNode.insertBefore(popup, input.nextSibling);
+}
+function searchTeams() {
+  var searchInput = document.getElementById('searchInput').value;
+  if(searchInput==""){
+    $('#searchInput').attr("placeholder", "Search term");
+    getTeamData();
+  }
+  else{
+      $.ajax({
+        url: 'http://localhost:8080/team/findByNameCaptainColour/' + searchInput,
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+          $("#teamTable").remove();
+          makeTable($("#tableDiv"), data,1);
+          $('#searchInput').attr("placeholder", searchInput);
+          $('#searchInput').val('');
+        },
+        error: function(request, error) {
+          alert("Request: " + JSON.stringify(request));
+        }
+      });
+  }
+
+}
+function toggleForm() {
+  isFormVisible = !isFormVisible;
+  var formContainer = document.getElementById("formContainer");
+  var toggleButton = document.getElementById("toggleFormButton");
+  var toggleButtonRect = toggleButton.getBoundingClientRect();
+
+  if (isFormVisible) {
+    formContainer.style.display = "block";
+    formContainer.style.top = toggleButtonRect.bottom + "px";
+    formContainer.style.left = toggleButtonRect.left + "px";
+    formContainer.style.opacity = 1;
+    formContainer.classList.add("dialogue-bubble-show");
+  } else {
+    formContainer.classList.add("dialogue-bubble-hide");
+    formContainer.addEventListener("animationend", function() {
+      formContainer.style.opacity = 0;
+      formContainer.style.display = "none";
+      formContainer.classList.remove("dialogue-bubble-hide");
+    }, { once: true });
+  }
+  if (isFormVisible) {
+    formContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+function setupFormClose() {
+    $(document).on('click', function(event) {
+        var formContainer = document.getElementById("formContainer");
+        var toggleButton = document.getElementById("toggleFormButton");
+        var isClickInsideForm = formContainer.contains(event.target);
+        var isClickOnToggleButton = (event.target === toggleButton);
+
+        if (isFormVisible && !isClickInsideForm && !isClickOnToggleButton) {
+            toggleForm();
+        }
+    });
 }

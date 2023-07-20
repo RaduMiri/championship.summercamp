@@ -8,6 +8,7 @@ import lombok.*;
 public class Game {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //TODO: Make table using gametype, cause each team plays a single game
     private Integer id;
     private String gameType;
     private String field;

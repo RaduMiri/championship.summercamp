@@ -275,7 +275,7 @@ function makeTable(container, data) {
             row.append("<td>" + "</td>");
         }
         table.append(row);
-        row.append('<td><input type="button" value="Delete" onclick="deletePlayer('+r.id+')"></td>');
+        row.append('<td><input type="button" value="Delete" onclick="deletePlayer('+r.id+')" class="btn-danger"></td>');
         table.append(row);
     });
     return container.append(table);

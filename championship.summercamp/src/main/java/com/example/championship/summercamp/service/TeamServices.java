@@ -7,6 +7,7 @@ import com.example.championship.summercamp.repository.TeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -49,6 +50,14 @@ public class TeamServices {
     }
     public List<Team> findByName(String name) {return teamRepository.findByName(name);}
     public List<Team> findByColour(String colour){return teamRepository.findByColour(colour);}
+    public List<Team> findByNameCaptainColour(String string){
+        List<Team> teamsFound = new ArrayList<>();
+        teamsFound.addAll(teamRepository.findByName(string));
+        teamsFound.addAll(teamRepository.findByColour(string));
+        teamsFound.addAll(teamRepository.findByCaptainFirstName(string));
+        teamsFound.addAll(teamRepository.findByCaptainLastName(string));
+        return teamsFound;
+    }
     //Sorts
     public List<Team> getAll(){
         return teamRepository.findAll();
