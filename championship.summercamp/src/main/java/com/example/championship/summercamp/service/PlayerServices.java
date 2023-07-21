@@ -33,8 +33,6 @@ public class PlayerServices {
     }
 
     public void deletePlayer(Integer id){
-        Integer teamCaptainId = playerRepository.findById(id).get().getTeamCaptain().getId();
-        teamRepository.findById(teamCaptainId).get().setCaptain(null);
         playerRepository.deleteById(id);
     }
     public void deleteAllPlayers(){playerRepository.deleteAll();}

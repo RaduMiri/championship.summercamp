@@ -41,7 +41,6 @@ public class TeamController {
     public List<Team> findByNameCaptainColour(@PathVariable String string){return teamServices.findByNameCaptainColour(string);}
 
     //Sorts
-    //TODO:This is sorted by id I think
     @GetMapping({"/findByOrderByIdAsc", "/all"})
     public List<Team> getAllTeams(){
         return teamServices.getAll();

@@ -17,7 +17,7 @@ public class Player {
     @ManyToOne
     @JoinColumn(foreignKey=@ForeignKey(name = "fk_player_team"))
     private Team team;
-    @OneToOne(mappedBy = "captain")
+    @OneToOne(mappedBy = "captain", cascade = CascadeType.ALL)
     @JsonIgnore
     private Team teamCaptain;
 

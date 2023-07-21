@@ -106,7 +106,6 @@ input {
   animation: pulse 3s infinite;
 }
 
-/* Custom select */
 select.custom-select {
   position: relative;
   display: block;
@@ -169,3 +168,10 @@ select.custom-select option[selected] {
     width: 150px;
 }
 
+
+.home-button-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+}

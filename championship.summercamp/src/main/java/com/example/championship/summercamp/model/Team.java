@@ -16,7 +16,7 @@ public class Team {
     //TODO:Score for game
     @OneToOne
     @JoinColumn(name = "captain_id", referencedColumnName = "id")
-    private Player captain; //TODO: Captain should not be able to be assigned to a different team
+    private Player captain;
     @OneToMany(mappedBy = "team")
     @JsonIgnore
     private List<Player> players;

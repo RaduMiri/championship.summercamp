@@ -583,7 +583,6 @@ function validateTeam(id){
 //Update
 function updateObject(id, button) {
     //Setup getting the position of the data
-    //TODO
     var row = $(button).closest('tr');
     var gameType = row.find('td:eq(0)').text();
     var field = row.find('td:eq(1)').text();
@@ -747,6 +746,28 @@ function restoreTableRow(row) {
   var oldRow = row.next(); // Get the next row (update form row)
   row.show(); // Show the original row
   oldRow.remove(); // Remove the update form row
+}
+//Delete
+function deleteObject(id, button) {
+  var confirmation = confirm("Are you sure you want to delete this object?");
+  if (confirmation) {
+    deleteObjectRequest(id);
+  }
+}
+function deleteObjectRequest(id) {
+  var deleteUrl = address + '/delete/' + id;
+  $.ajax({
+    url: deleteUrl,
+    type: 'DELETE',
+    success: function(data) {
+      getObjectData();
+      getTeamData();
+    },
+    error: function(request, error) {
+      return [];
+      alert("Request: " + JSON.stringify(request));
+    }
+  });
 }
 //Filter
 function search() {

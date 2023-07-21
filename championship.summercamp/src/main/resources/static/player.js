@@ -189,7 +189,7 @@ function getObjectNumberDesc(){
       }
   });
 }
-function getObjectTeamColourAsc(){
+function getObjectTeamAsc(){
   $.ajax({
       url : address+'/findByOrderByTeamColourAsc',
       type : 'GET',
@@ -205,7 +205,7 @@ function getObjectTeamColourAsc(){
       }
   });
 }
-function getObjectTeamColourDesc(){
+function getObjectTeamDesc(){
   $.ajax({
       url : address+'/findByOrderByTeamColourDesc',
       type : 'GET',
@@ -238,7 +238,7 @@ function makeTable(container, data, currentPage) {
     var toShow = data.slice(startIndex, endIndex);
     //Table row
     var row = $("<tr/>");
-    var array = ["firstName", "lastName", "age", "number","teamColour"];
+    var array = ["firstName", "lastName", "age", "number","team"];
     for(let i=0;i<array.length;i++){
         row.append("<th>"+uppercase(array[i])+"<a href='#' id='"+array[i]+"Desc' style='float:right' onclick='getObject"+uppercase(array[i])+"Desc()'>↓</a><a href='#' id='"+array[i]+"Asc' style='float:right' onclick='getObject"+uppercase(array[i])+"Asc()'>↑</a></th>");
     }
@@ -443,7 +443,7 @@ function post(event){
     if($("#team option:selected").attr("name")!="empty"){
         data.team={id:$("#team option:selected").attr("name")}
     }
-    if(!validateTeam("team")) return false;
+//    if(!validateTeam("team")) return false;
     //Validate all conditions
     if (!validateAllInputs(data,"firstName", "lastName", "number", "team")) return false;
     //Request
@@ -532,16 +532,16 @@ function clearErrors() {
         }
     });
 }
-function validateTeam(id){
-  var teamSelect = $('#'+id);
-  var selectedOption = $("#"+id+" option:selected");
-  var selectedOptionName = selectedOption.attr('name');
-  if (selectedOptionName === 'empty') {
-    addErrors(teamSelect, 'Please select a team.');
-    return false;
-  }
-  return true;
-}
+//function validateTeam(id){
+//  var teamSelect = $('#'+id);
+//  var selectedOption = $("#"+id+" option:selected");
+//  var selectedOptionName = selectedOption.attr('name');
+//  if (selectedOptionName === 'empty') {
+//    addErrors(teamSelect, 'Please select a team.');
+//    return false;
+//  }
+//  return true;
+//}
 function validateAllInputs(data, firstName, lastName, number, team) {
     //Check for each object if the differentiating attributes are identical
     for (var i = 1; i < tempObjectData.length; i++) {
@@ -560,13 +560,20 @@ function validateAllInputs(data, firstName, lastName, number, team) {
     }
     return true;
 }
-//Delete + optional Add check when deleting the captain of a team to confirm that the team will be
-//deleted as well so you should first change the captain of the team and make sure the cascade deletes the team
 function deleteObject(id, button) {
-  var confirmation = confirm("Are you sure you want to delete this object?");
-  if (confirmation) {
-    deleteObjectRequest(id);
-  }
+    var row = $(button).closest('tr');
+    var captainText = row.find('td:eq(4)').text();
+    if (captainText.includes('Captain')) {
+        var confirmation = confirm("This player is a captain. Deleting this player will also delete the team. Are you sure you want to proceed?");
+        if (confirmation) {
+            deleteObjectRequest(id);
+        }
+    } else {
+        var confirmation = confirm("Are you sure you want to delete this player?");
+        if (confirmation) {
+            deleteObjectRequest(id);
+        }
+    }
 }
 function deleteObjectRequest(id) {
   var deleteUrl = address + '/delete/' + id;
